@@ -1,7 +1,7 @@
 Package: bnclassify
 Title: Learning Bayesian Network Classifiers from Data
 Description: Implementation of different algorithms for learning discrete Bayesian network classifiers from data, including wrapper algorithms and those based on Chow-Liu's algorithm. 
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: c(person("Mihaljevic","Bojan",email="bmihaljevic@fi.upm.es",role=c("aut","cre")),
     person("Bielza","Concha",email="mcbielza@fi.upm.es",role="aut"),
     person("Larranaga","Pedro",email="pedro.larranaga@fi.upm.es",role="aut"))
@@ -13,7 +13,8 @@ Imports: assertthat (>= 0.1), entropy(>= 1.2.0), crossval(>= 1.0.2),
         rpart(>= 4.1-8)
 Suggests: gRain(>= 1.2-3), gRbase(>= 1.7-0.1), mlr(>= 2.2), testthat(>=
         0.8.1), knitr(>= 1.10.5), microbenchmark(>= 1.4-2),
-        ParamHelpers(>= 1.5), Rgraphviz(>= 2.8.1), rmarkdown(>= 0.7)
+        ParamHelpers(>= 1.5), Rgraphviz(>= 2.8.1), rmarkdown(>= 0.7),
+        covr
 License: GPL (>= 2)
 Author: Mihaljevic Bojan [aut, cre],
     Bielza Concha [aut],
@@ -21,6 +22,6 @@ Author: Mihaljevic Bojan [aut, cre],
 Maintainer: Mihaljevic Bojan <bmihaljevic@fi.upm.es>
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2015-07-30 08:14:36 UTC; Bojan
+Packaged: 2015-10-29 13:16:58 UTC; Bojan
 Repository: CRAN
-Date/Publication: 2015-07-30 11:27:47
+Date/Publication: 2015-10-29 15:19:09

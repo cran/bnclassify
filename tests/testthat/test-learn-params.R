@@ -32,35 +32,107 @@ test_that('Set feature weights', {
   expect_true(are_pdists(t(params(f)$buying)))
 })
 
-test_that('lawnb nominal', {
+test_that('awnb nominal', {
   nb <- nbcar()
-  a <- lpawnb(nb, car, smooth = 1, trees = 1, bootstrap_size = 1) 
+  a <- lp(nb, car, smooth = 1, awnb_trees = 1, awnb_bootstrap = 1) 
   b <- lp(nb, car, smooth = 1)
   expect_equal(params(a)$class, params(b)$class)
   expect_true(all(params(a)$buying != params(b)$buying))
   expect_true(are_pdists(t(params(a)$buying)))
-  expect_equal(a$.call_bn[[1]], "lpawnb")
+  expect_equal(a$.call_bn[[1]], "lp")
 })
 
-test_that('lawnb default params', {
+test_that("awnb do not call", {
+  nb <- nbcar()
+  a <- lp(nb, car, smooth = 1, awnb_trees = NULL, awnb_bootstrap = NULL) 
+  b <- lp(nb, car, smooth = 1)
+  identical_non_call(a, b)
+})
+
+test_that('awnb default params', {
   nb <- nbcar()
   set.seed(0)
-  a <- lpawnb(nb, car, smooth = 1, trees = 10, bootstrap_size = 0.5) 
+  a <- lp(nb, car, smooth = 1, awnb_trees = 10, awnb_bootstrap = 0.5) 
   set.seed(0)
-  b <- lpawnb(nb, car, smooth = 1) 
-  a$.call_bn <- NULL
-  b$.call_bn <- NULL
-  expect_equal(a, b)
+  b <- lp(nb, car, smooth = 1, awnb_trees = 10) 
+  identical_non_call(a, b)
+  set.seed(0)
+  b <- lp(nb, car, smooth = 1, awnb_bootstrap = 0.5) 
+  identical_non_call(a, b)
+})
+
+test_that("awnb Incomplete data" , {
+  a <- nb('Class', voting)
+  b <- lp(a, voting, smooth = 1, awnb_trees = 1, awnb_bootstrap = 0.1)
+  c <- lp(a, voting, smooth = 1)
+  expect_equal(params(b), params(set_weights(c, awnb_weights(b))))
 })
 
 test_that('bnc function nominal', {
   a <- bnc('nb', 'class', car, smooth = 1)
-  b <- lp(nb('class', car), car, smooth = 1)
+  b <- lp(nb('class', car), car, smooth = 1, awnb_trees = NULL, 
+          awnb_bootstrap = NULL, manb_prior = NULL)
   expect_identical(a, b)
 })
 
 test_that('bnc with args', {
   a <- bnc('tan_cl', 'class', car, smooth = 1, dag_args = list(root = 'safety'))
-  b <- lp(tan_cl('class', car, root = 'safety'), car, smooth = 1)
+  b <- lp(tan_cl('class', car, root = 'safety'), car, smooth = 1, 
+          awnb_trees = NULL, awnb_bootstrap = NULL, manb_prior = NULL)
   expect_identical(a, b)
+})
+
+test_that('bnc with args and awnb', {
+  set.seed(0)
+  a <- bnc('tan_cl', 'class', car, smooth = 1, dag_args = list(root = 'safety'),
+           awnb_trees = 10)
+  set.seed(0)
+  b <- lp(tan_cl('class', car, root = 'safety'), car, smooth = 1, 
+          awnb_trees = 10, awnb_bootstrap = NULL, manb_prior = NULL)
+  expect_identical(a, b)
+})
+
+test_that('lp_implement with cache nominal', {
+  n <- nb('class', car)
+  a <- make_cpts_cache(car, smooth = 0.04)
+  e <- lp_implement(n, .mem_cpts = a)
+  b <- lp_implement(n, car, smooth = 0.04)
+  expect_identical(e, b)
+})
+
+test_that('either awnb or manb', {
+  n <- nb('class', car)
+  expect_error(lp(n, car, smooth = 1, awnb_trees = 2, manb_prior = 0.3),
+               "Either MANB or AWNB can be applied, not both.")
+  expect_error(lp(n, car, smooth = 1, awnb_bootstrap = 1, manb_prior = 0.3),
+               "Either MANB or AWNB can be applied, not both.")
+})
+
+test_that("manb nominal", {
+  nb <- nbcar()
+  manb <- lp(nb, car, smooth = 1, manb_prior = 0.5)
+  expect_equivalent(manb$.manb, c(1, 1, 0.000026294701543, 1, 1, 1)) 
+  expect_equal(names(manb$.params), names(nb$.params))
+  expect_equal(sum(abs(manb$.params[['doors']] - nb$.params[['doors']])), 
+               0.3950593, tolerance = 1e-7)
+  
+  nb <- nbcar()
+  manb <- lp(nb, car, smooth = 1)
+  expect_null(manb$.manb)
+  expect_identical(manb$.params, nb$.params)
+})
+
+test_that("check manb predictions match wei java implementation", {
+  nb <- lp(nb('class', car), car, smooth = 1)
+  manb <- lp(nb, car, smooth = 1, manb_prior = 0.5)
+  p <- predict(manb, car, prob = TRUE)
+  expect_equal(as.vector(p[12, 2]), 0.301507, tolerance = 0.0000002)
+  expect_equal(as.vector(p[1646, 2]), 0.307484, tolerance = 0.000002)
+  expect_equal(as.vector(p[1728, 2]), 0.209418, tolerance = 0.000002)
+  
+  nb <- lp(nb('class', car), car, smooth = 1)
+  manb <- lp(nb, car, smooth = 1, manb_prior = 0.00001)
+  p <- predict(manb, car, prob = TRUE)
+  expect_equal(as.vector(p[12, 2]), 0.301510, tolerance = 0.000002)
+  expect_equal(as.vector(p[18, 2]), 0.418681, tolerance = 0.000002)
 })

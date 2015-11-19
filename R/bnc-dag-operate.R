@@ -1,47 +1,72 @@
 #' @export 
-#' @describeIn bnc_dag_object  Returns the number of arcs.
+#' @describeIn inspect_bnc_dag  Returns the number of arcs.
 narcs <- function(x) {
   num_arcs(as_graphNEL(x))
 }
 #' Plot the structure.
-#' @export 
-#' @param x The bnc_dag_object
-#' @param y Not used 
-#' @param layoutType Layout type
-#' @param cex cex for node labels.
+#' 
+#' If node labels are to small to be viewed properly, you may fix label fontsize
+#' with argument fontsize. Also, you may try multiple different layouts.
+#' 
+#' @export
+#' @inheritParams inspect_bnc_dag
+#' @param y Not used
+#' @param layoutType a character. Optional.
+#' @param fontsize integer Font size for node labels. Optional.
 #' @param ... Not used.
-plot.bnc_dag <- function(x, y, layoutType='dot', cex = NULL, ...) {
+#' @examples  
+#' 
+#' data(car)
+#' nb <- nb('class', car)
+#' nb <- nb('class', car)
+#' plot(nb)
+#' plot(nb, fontsize = 20)
+#' plot(nb, layoutType = 'circo')
+#' plot(nb, layoutType = 'fdp')
+#' plot(nb, layoutType = 'osage')
+#' plot(nb, layoutType = 'twopi')
+#' plot(nb, layoutType = 'neato')
+plot.bnc_dag <- function(x, y, layoutType='dot', fontsize = NULL, ...) {
   if (!requireNamespace("Rgraphviz", quietly = TRUE)) {
     stop("Rgraphviz needed ", call. = FALSE)
   }
   g <- as_graphNEL(x)
-  if (!is.null(cex)) {
-    graph::nodeRenderInfo(g) <- list(cex = cex)
+  node_pars <- list(col = "green", textCol = "blue",  lty = "longdash", lwd = 1)
+  if (!is.null(fontsize)) {
+    node_pars$fontsize <- fontsize
   }
   l <- Rgraphviz::layoutGraph(g, layoutType = layoutType)
-  Rgraphviz::renderGraph(l)
+  Rgraphviz::renderGraph(l, graph.pars = list(nodes = node_pars))
 }
 #' Print basic information about a classifier.
 #' @export
 #' @keywords internal
 print.bnc_dag <- function(x, ...) {  
-  cat("\n  Bayesian network classifier\n\n")  
+  cat("\n  Bayesian network classifier")  
+  is_bnc_bn <- inherits(x, "bnc_bn")
+  if (!is_bnc_bn) {
+    cat(" (only structure, no parameters)")
+  }
+  cat("\n\n")
   cat("  class variable:       ", class_var(x), "\n")
   cat("  num. features:  ", length(features(x)), "\n")
-  cat("  arcs:  ", narcs(x), "\n")
+  cat("  num. arcs:  ", narcs(x), "\n")
+  if (is_bnc_bn) {
+    cat("  free parameters:  ", nparams(x), "\n")
+  }
   if (!is.null(x$.call_struct)) {
     cat("  learning algorithm:   ", as.character(x$.call_struct[[1]]), "\n")
   }
 }
 #' @export 
-#' @describeIn bnc_dag_object Returns TRUE if \code{x} is a semi-naive Bayes.
+#' @describeIn inspect_bnc_dag Returns TRUE if \code{x} is a semi-naive Bayes.
 is_semi_naive <- function(x) {
   if (!is_anb(x)) return(FALSE)
   nc <- not_cci(x)
   all(vapply(nc, is_supernode, x, FUN.VALUE = logical(1)))
 }
 #' @export 
-#' @describeIn bnc_dag_object Returns TRUE if \code{x} is an augmented naive Bayes.
+#' @describeIn inspect_bnc_dag Returns TRUE if \code{x} is an augmented naive Bayes.
 is_anb <- function(x) {
   if (!is_dag_graph(as_graphNEL(x))) return(FALSE)
   # Check call has no parents and class is in all families. This
@@ -50,12 +75,12 @@ is_anb <- function(x) {
   identical(last, class_var(x))
 }
 #' @export 
-#' @describeIn bnc_dag_object Returns TRUE if \code{x} is a naive Bayes.
+#' @describeIn inspect_bnc_dag Returns TRUE if \code{x} is a naive Bayes.
 is_nb <- function(x) {
   is_kde(x, 0)
 }
 #' @export 
-#' @describeIn bnc_dag_object Returns TRUE if \code{x} is a one-dependence estimator.
+#' @describeIn inspect_bnc_dag Returns TRUE if \code{x} is a one-dependence estimator.
 is_ode <- function(x) {
   is_kde(x, 1)
 }

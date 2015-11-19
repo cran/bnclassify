@@ -28,9 +28,10 @@ test_that("one no tree", {
                     bootstrap_size = 0.5, trees = 10), "empty")
 })
 
-test_that("Incomplete data" , {
-  a <- nb('Class', voting)
-  b <- lpawnb(a, voting, smooth = 1, trees = 1, bootstrap_size = 0.1)
-  c <- lp(a, voting, smooth = 1)
-  expect_equal(params(b), params(set_weights(c, b$.weights)))
+test_that("weights for features not in tree", {  
+  set.seed(0)
+  a <- awnb('class', car[sample(1:1000, 10), , drop = FALSE], 
+            bootstrap_size = 1, trees = 1)
+  a
+  expect_true(is_perm(names(a), colnames(car)[-7]))
 })

@@ -95,6 +95,15 @@ NULL
 #' \code{\link{grain_and_graph}}.
 #' 
 #' @name bnc_bn
+#' 
+#' @examples 
+#' data(car)
+#' tan <- bnc('tan_cl', 'class', car, smooth = 1)   
+#' tan
+#' p <- predict(tan, car)
+#' head(p)
+#' plot(tan)
+#' nparams(tan)
 NULL
 
 #' Bayesian network classifier structure.
@@ -103,10 +112,17 @@ NULL
 #' \code{\link{nb}} and \code{\link{tan_cl}}. You can plot its structure (with 
 #' \code{\link[=plot.bnc_dag]{plot}}), print a summary to console 
 #' (\code{\link[=print.bnc_dag]{print}}), inspect it with functions documented
-#' in \code{\link{inspect_bnc_dag}}, and convert it to a graph object; see
+#' in \code{\link{inspect_bnc_dag}}, and convert it to a graph object with 
 #' \code{\link{grain_and_graph}}.
 #' 
 #' @name bnc_dag
+#' 
+#' @examples 
+#' data(car)
+#' nb <- tan_cl('class', car)   
+#' nb
+#' plot(nb)
+#' narcs(nb)
 NULL
 
 #' Congress Voting Data Set.
@@ -144,10 +160,15 @@ NULL
 #' @inheritParams learn_params
 #' @param epsilon A numeric. Minimum absolute improvement in accuracy required 
 #'   to keep searching.
-#' @param cache_reset A numeric. Number of interations after which to reset the 
+#' @param cache_reset A numeric. Number of iterations after which to reset the 
 #'   cache of conditional probability tables. A small number reduces the amount
 #'   of memory used. \code{NULL} means the cache is never reset (the default).
 #' @return A \code{\link{bnc_dag}} object.
+#' 
+#' @examples 
+#' data(car)
+#' tanhc <- tan_hc('class', car, k = 5, epsilon = 0)  
+#' plot(tanhc) 
 #'   
 #' @references Pazzani M (1996). Constructive induction of Cartesian product 
 #'   attributes. In \emph{Proceedings of the Information, Statistics and 

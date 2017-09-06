@@ -1,7 +1,7 @@
 Package: bnclassify
 Title: Learning Discrete Bayesian Network Classifiers from Data
-Description: Implements state-of-the art algorithms for learning discrete Bayesian network classifiers from data, as well as functions for using these classifiers for prediction, assessing their predictive performance, and inspecting their properties.
-Version: 0.3.2
+Description: Implements state-of-the art algorithms for learning discrete Bayesian network classifiers from data, including a number of those described in Bielza & Larranaga (2014) <doi:10.1145/2576868>, as well as functions for using these classifiers for prediction, assessing their predictive performance, and inspecting their properties.
+Version: 0.3.3
 Authors@R: c(person("Mihaljevic","Bojan",email="bmihaljevic@fi.upm.es",role=c("aut","cre")),
     person("Bielza","Concha",email="mcbielza@fi.upm.es",role="aut"),
     person("Larranaga","Pedro",email="pedro.larranaga@fi.upm.es",role="aut"), 
@@ -18,11 +18,12 @@ Suggests: gRain(>= 1.2-3), gRbase(>= 1.7-0.1), mlr(>= 2.2), testthat(>=
 License: GPL (>= 2)
 Maintainer: Mihaljevic Bojan <bmihaljevic@fi.upm.es>
 VignetteBuilder: knitr
+RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2015-11-18 22:48:26 UTC; Bojan
+Packaged: 2017-09-06 11:14:51 UTC; bmihaljevic
 Author: Mihaljevic Bojan [aut, cre],
   Bielza Concha [aut],
   Larranaga Pedro [aut],
   Wickham Hadley [ctb] (some code extracted from memoise package)
 Repository: CRAN
-Date/Publication: 2015-11-19 11:02:21
+Date/Publication: 2017-09-06 17:29:28 UTC

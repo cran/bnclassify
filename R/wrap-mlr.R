@@ -10,19 +10,18 @@
 #' @examples 
 #' data(car)
 #' nb <- bnc('nb', 'class', car, smooth = 1)
+#' library(mlr)
 #' nb_mlr <- as_mlr(nb, dag = FALSE, id = "ode_cl_aic") 
 #' nb_mlr
 as_mlr <- function(x, dag, id = "1") {
-  if (!requireNamespace("mlr", quietly = TRUE)) {
-    stop("Package mlr required for this functionality.")
-  }
+  check_mlr_attached()  
   check_bnc_bn(x)
   args <- bnc_get_update_args(x, dag)
   # Call make learner with the arguments
   mlr::makeLearner("bnc", id = id, par.vals = list(args=args))
 }
 #' makeRLearner. Auxiliary mlr function. 
-#' @export
+#' @export makeRLearner.bnc 
 #' @keywords internal
 makeRLearner.bnc <- function() {
   if (!requireNamespace("mlr", quietly = TRUE)) {
@@ -38,7 +37,7 @@ makeRLearner.bnc <- function() {
   )
 }
 #' trainLearner. Auxiliary mlr function. 
-#' @export 
+#' @export trainLearner.bnc 
 #' @keywords internal
 #' @param .learner,.task,.subset,.weights Internal.
 #' @param ... Internal.
@@ -52,7 +51,7 @@ trainLearner.bnc = function(.learner, .task, .subset, .weights, ...) {
   bnc_update(args, dataset)
 }
 #' predictLearner. Auxiliary mlr function. 
-#' @export 
+#' @export predictLearner.bnc 
 #' @keywords internal
 #' @param .learner,.model,.newdata Internal.
 #' @param ... Internal.
@@ -69,3 +68,13 @@ retrieve_bnc_properties <- function() {
   c("oneclass", "twoclass", "multiclass", "factors", "prob", "numerics", 
     "missings")
 }
+#' Checks if mlr attached.
+#' 
+#' mlr must be attached because otherwise  `getMlrOptions()` in `makeLearner` will not be found.
+#' @keywords internal
+check_mlr_attached <- function() {
+  mlr_loaded <- 'package:mlr' %in% search()
+  if (!mlr_loaded) {
+    stop("mlr package must be loaded (run, e.g., library(mlr)) in order to use this functionality. Install the package first if needed.")
+  } 
+} 

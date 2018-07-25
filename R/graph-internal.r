@@ -128,7 +128,7 @@ graph_add_edges <- function(from, to, g) {
   edges <- rbind(g$edges, edges)
   augmented <- new_graph_internal(nodes = g$nodes, edges = edges, NULL, "directed")  
   augmented 
-}
+} 
 graph_remove_edges <- function(from, to, g) {  
   stopifnot(inherits( g, "bnc_graph_internal")) 
   # currently only for undirected
@@ -136,6 +136,15 @@ graph_remove_edges <- function(from, to, g) {
   if (!all(from %in% g$nodes)) stop("Node not in graph")  
   if (!all(to %in% g$nodes)) stop("Node not in graph")  
   removed <- call_bh('bh_remove_edges', g = g, remove_from = from, remove_to = to, edgemode = g$edgemode)  
+  # TODO: FIX THIS IS RCPP code! It might return a vector  of edges, not a matrix
+  if (!is.matrix(removed$edges)) {
+    if (length(removed$edges) == 2) {
+      removed$edges <- matrix(removed$edges, ncol = 2)
+    } 
+    else {
+      stop("wrong edges")
+    }
+  }
   # TODO: currently this does not preserve node weights!!!  Yet is it not used now for weighted graphs.
   removed <- graph_internal(removed$nodes, removed$edges, NULL, g$edgemode)
   removed  
@@ -317,9 +326,9 @@ graph_direct_forest <- function(g, root = NULL) {
   g <- graph_union(g = trees)  
   g
 } 
-graph_superimpose_node <- function(g, node) {  
-  stopifnot(inherits( g, "bnc_graph_internal"))  
-  stopifnot(is_dag_graph(g))
+graph_superimpose_node <- function(g, node) {
+  stopifnot(inherits( g, "bnc_graph_internal"))
+  # stopifnot(is_dag_graph(g))
 #   Check node is length one character 
   check_node(node)  
 #   Check node not in g nodes 

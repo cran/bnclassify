@@ -43,19 +43,21 @@ head(p)
 ``` 
 
 
-```{r, echo = FALSE, results='hide', include=FALSE} 
+```{r, echo = FALSE, results='hide', include=FALSE}  
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(1)
 ```
 
 ## Learning 
 The functions for structure learning, shown in \rtbl{algorithms}, correspond to the different algorithms. They all receive the name of the class variable and the data set as their first two arguments, which are then followed by optional arguments. The following runs the CL-ODE algorithm with the AIC score, followed by the FSSJ algorithm to learn another model:
 ```{r learn_ode} 
-ode_cl_aic <- tan_cl('class', car, score = 'aic')  
+ode_cl_aic <- tan_cl('class', car, score = 'aic')   
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(3)
 fssj <- fssj('class', car, k = 5, epsilon = 0)
 ```        
 
-The \code{bnc} function is a shorthand for learning structure and parameters in a single step, 
+The \code{bnc()} function is a shorthand for learning structure and parameters in a single step, 
 ```{r}
 ode_cl_aic <- bnc('tan_cl', 'class', car, smooth = 1, dag_args = list(score = 'aic'))
 ```
@@ -77,18 +79,18 @@ ms <- modelstring(ode_cl_aic)
 strwrap(ms, width = 60)
 ``` 
 
-We can query the type of structure; \code{params} lets us access the conditional probability tables (CPTs); while \code{features} lists the features:   
+We can query the type of structure; \code{params()} lets us access the conditional probability tables (CPTs); while \code{features()} lists the features:   
 ```{r} 
 is_ode(ode_cl_aic)
 params(nb)$buying
 length(features(fssj))
 ``` 
-For example, \code{fssj} has selected five out of six features.  
+For example, \code{fssj()} has selected five out of six features.  
 
-\code{manb\_arc\_posterior} provides the MANB posterior probabilities for arcs from the class to each of the features: 
+\code{manb\_arc\_posterior()} provides the MANB posterior probabilities for arcs from the class to each of the features: 
 ```{r} 
 manb <- lp(nb, car, smooth = 0.01, manb_prior = 0.5)
-manb_arc_posterior(manb)
+round(manb_arc_posterior(manb))
 ```
 
 With the posterior probability of 0% for the arc from `class` to `doors`, and 100\% for all others, MANB renders \code{doors} independent from the class while leaving the other features' parameters unaltered. We can see this by printing out the CPTs:
@@ -100,15 +102,16 @@ For more functions for querying a structure with parameters (\code{bnc\_bn}) see
 
 ## Evaluating
   
-Multiple scores can be computed: 
+Several scores can be computed: 
 ```{r}
 logLik(ode_cl_aic, car)
 AIC(ode_cl_aic, car)
 ```   
 <!-- cLogLik -->
 
-The `cv` function estimates the predictive accuracy of one or more models with stratified cross-validation. In the following we assess the above models produced by NB and CL-ODE algorithms:     
-```{r} 
+The `cv` function estimates the predictive accuracy of one or more models with a single run of stratified cross-validation. In the following we assess the above models produced by NB and CL-ODE algorithms:     
+```{r}  
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(0)
 cv(list(nb = nb, ode_cl_aic = ode_cl_aic), car, k = 5, dag = TRUE)
 ```
@@ -118,5 +121,6 @@ cv(list(nb = nb, ode_cl_aic = ode_cl_aic), car, k = 5, dag = TRUE)
 As shown above, we can predict class labels with `predict`. We can also get the class posterior probabilities:    
 ```{r}
 pp <- predict(nb, car, prob = TRUE)
+# Show class posterior distributions for the first six instances of car
 head(pp)
 ``` 

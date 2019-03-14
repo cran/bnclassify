@@ -22,10 +22,12 @@ p <- predict(nb, car)
 head(p) 
 
 ## ---- echo = FALSE, results='hide', include=FALSE------------------------
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(1)
 
 ## ----learn_ode-----------------------------------------------------------
-ode_cl_aic <- tan_cl('class', car, score = 'aic')  
+ode_cl_aic <- tan_cl('class', car, score = 'aic')   
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(3)
 fssj <- fssj('class', car, k = 5, epsilon = 0)
 
@@ -46,7 +48,7 @@ length(features(fssj))
 
 ## ------------------------------------------------------------------------
 manb <- lp(nb, car, smooth = 0.01, manb_prior = 0.5)
-manb_arc_posterior(manb)
+round(manb_arc_posterior(manb))
 
 ## ------------------------------------------------------------------------
 params(manb)$doors 
@@ -57,10 +59,12 @@ logLik(ode_cl_aic, car)
 AIC(ode_cl_aic, car)
 
 ## ------------------------------------------------------------------------
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(0)
 cv(list(nb = nb, ode_cl_aic = ode_cl_aic), car, k = 5, dag = TRUE)
 
 ## ------------------------------------------------------------------------
 pp <- predict(nb, car, prob = TRUE)
+# Show class posterior distributions for the first six instances of car
 head(pp)
 

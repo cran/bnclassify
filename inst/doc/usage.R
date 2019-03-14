@@ -72,7 +72,8 @@ g <- as_grain(a)
 gRain::querygrain.grain(g)$buying
 
 ## ------------------------------------------------------------------------
-length(features(fssj))
+length(features(fssj)) 
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(0)
 bsej <- bsej('class', car, k = 5, epsilon = 0)  
 length(features(bsej))
@@ -99,18 +100,22 @@ p <- predict(nb, car)
 accuracy(p, car$class)
 
 ## ------------------------------------------------------------------------
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(0)
 cv(ode_cl_aic, car, k = 10)
 
 ## ------------------------------------------------------------------------
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(0)
 cv(ode_cl_aic, car, k = 10, dag = FALSE)
 
 ## ------------------------------------------------------------------------
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(0)
 cv(ode_cl_aic, car, k = 10, dag = FALSE, mean = FALSE)
 
 ## ------------------------------------------------------------------------
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(0)
 accu <- cv(list(nb = nb, ode_cl_aic = ode_cl_aic), car, k = 5, dag = TRUE)
 accu
@@ -146,6 +151,7 @@ cmi('maint', 'buying', car, 'class')
 #          target = 'class', fixup.data = "no", check.data = FALSE)
 
 ## ----wrapper_fss, eval = FALSE-------------------------------------------
+#  suppressWarnings(RNGversion("3.5.0"))
 #  set.seed(0)
 #  # Select features
 #  mod <- train(ode_cl_aic_mlr_fs, task = t)
@@ -153,6 +159,7 @@ cmi('maint', 'buying', car, 'class')
 #  sfeats
 
 ## ---- eval = FALSE-------------------------------------------------------
+#  suppressWarnings(RNGversion("3.5.0"))
 #  set.seed(0)
 #  r = resample(learner = ode_cl_aic_mlr_fs, task = t,
 #               resampling = rdesc, show.info = FALSE, measure = mlr::acc)
@@ -166,6 +173,7 @@ cmi('maint', 'buying', car, 'class')
 ## ---- eval = FALSE-------------------------------------------------------
 #  rf <- makeLearner("classif.randomForest", id = "rf")
 #  classifiers <- list(ode_cl_aic_mlr, rf)
+#  suppressWarnings(RNGversion("3.5.0"))
 #  set.seed(0)
 #  benchmark(classifiers, t, rdesc, show.info = FALSE, measures = mlr::acc)
 

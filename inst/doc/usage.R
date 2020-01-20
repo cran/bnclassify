@@ -67,9 +67,9 @@ params(nb)$buying
 nparams(nb)
 
 ## ------------------------------------------------------------------------
-a <- lp(nb('class', car), car, smooth = 1)
-g <- as_grain(a)
-gRain::querygrain.grain(g)$buying
+# a <- lp(nb('class', car), car, smooth = 1)
+# g <- as_grain(a)
+# gRain::querygrain.grain(g)$buying
 
 ## ------------------------------------------------------------------------
 length(features(fssj)) 

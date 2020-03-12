@@ -9,20 +9,23 @@
 \alias{tan_hcsp}
 \title{Learn Bayesian network classifiers in a a greedy wrapper fashion.}
 \usage{
-fssj(class, dataset, k, epsilon = 0.01, smooth = 0,
-  cache_reset = NULL)
+fssj(class, dataset, k, epsilon = 0.01, smooth = 0, cache_reset = NULL)
 
-bsej(class, dataset, k, epsilon = 0.01, smooth = 0,
-  cache_reset = NULL)
+bsej(class, dataset, k, epsilon = 0.01, smooth = 0, cache_reset = NULL)
 
-tan_hc(class, dataset, k, epsilon = 0.01, smooth = 0,
-  cache_reset = NULL)
+tan_hc(class, dataset, k, epsilon = 0.01, smooth = 0, cache_reset = NULL)
 
-kdb(class, dataset, k, kdbk = 2, epsilon = 0.01, smooth = 0,
-  cache_reset = NULL)
+kdb(
+  class,
+  dataset,
+  k,
+  kdbk = 2,
+  epsilon = 0.01,
+  smooth = 0,
+  cache_reset = NULL
+)
 
-tan_hcsp(class, dataset, k, epsilon = 0.01, smooth = 0,
-  cache_reset = NULL)
+tan_hcsp(class, dataset, k, epsilon = 0.01, smooth = 0, cache_reset = NULL)
 }
 \arguments{
 \item{class}{A character. Name of the class variable.}

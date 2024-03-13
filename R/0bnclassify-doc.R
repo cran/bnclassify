@@ -42,14 +42,13 @@
 #' 
 #' Inspecting models:
 #'  \itemize{ 
-#'  \item \code{\link[=plot.bnc_dag]{plot}}: Structure plotting (through \code{Rgraphviz})
+#'  \item \code{\link[=plot.bnc_dag]{plot}}: Structure plotting (through \code{igraph})
 #'  \item \code{\link[=print.bnc_base]{print}}: Summary 
 #'  \item \code{\link{params}}: Access conditional probability tables 
 #'  \item \code{\link{nparams}}: Number of free parameters 
 #'  \item and more. See \code{\link{inspect_bnc_dag}} and \code{\link{inspect_bnc_bn}}.
 #'  } 
 #' 
-#' @docType package
 #' @name bnclassify
 #' @importFrom stats predict as.formula complete.cases setNames logLik AIC BIC nobs optim
 #' @importFrom graphics plot
@@ -86,7 +85,7 @@
 #'   Pazzani M (1996). Constructive induction of Cartesian product attributes. 
 #'   In \emph{Proceedings of the Information, Statistics and Induction in 
 #'   Science Conference (ISIS-1996)}, pp. 66-77
-NULL
+"_PACKAGE"
 
 
 #' Bayesian network classifier with structure and parameters.
@@ -363,9 +362,9 @@ NULL
 #' cLogLik(nb, car)   
 NULL
 
-#' Convert to graph and gRain.
+#' Convert to igraph and gRain.
 #' 
-#' Convert a \code{\link{bnc_dag}} to \code{graphNEL} and
+#' Convert a \code{\link{bnc_dag}} to \code{igraph} and
 #' \code{\link[gRain]{grain}} objects.
 #' 
 #' @name grain_and_graph
@@ -373,7 +372,7 @@ NULL
 #' @examples 
 #' data(car)
 #' nb <- bnc('nb', 'class', car, smooth = 1)
-#' # Requires the grain and graph packages installed
+#' # Requires the grain and igraph packages installed
 #' \dontrun{g <- as_grain(nb)}
 #' \dontrun{gRain::querygrain.grain(g)$buying}
 NULL

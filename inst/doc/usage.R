@@ -1,4 +1,4 @@
-## ---- echo = FALSE------------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 knitr::opts_chunk$set(cache = FALSE, autodep = TRUE, collapse = TRUE, comment = "#>"
                       # , fig.height = 3, fig.width = 3
                       )
@@ -27,10 +27,10 @@ fssj <- fssj('class', car, k = 5, epsilon = 0)
 ## -----------------------------------------------------------------------------
 ode_cl_aic 
 
-## ---- fig.height=4------------------------------------------------------------
+## ----fig.height=4-------------------------------------------------------------
 plot(ode_cl_aic)
 
-## ---- fig.height=4------------------------------------------------------------
+## ----fig.height=4-------------------------------------------------------------
 plot(ode_cl_aic, layoutType = 'twopi', fontsize = 15)
 
 ## -----------------------------------------------------------------------------
@@ -59,7 +59,7 @@ ode_cl_aic
 ## -----------------------------------------------------------------------------
 params(nb)$buying
 
-## ---- eval = FALSE, results = "hide", echo = FALSE----------------------------
+## ----eval = FALSE, results = "hide", echo = FALSE-----------------------------
 #  params(awnb)$buying
 #  params(manb)$buying
 
@@ -135,11 +135,11 @@ cmi('maint', 'buying', car)
 ## -----------------------------------------------------------------------------
 cmi('maint', 'buying', car, 'class')
 
-## ---- eval = FALSE------------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  library(mlr)
 #  ode_cl_aic_mlr <- as_mlr(ode_cl_aic, dag = TRUE, id = "ode_cl_aic")
 
-## ---- eval = FALSE------------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  # 5-fold cross-validation
 #  rdesc = makeResampleDesc("CV", iters = 2)
 #  # sequential floating forward search
@@ -158,19 +158,19 @@ cmi('maint', 'buying', car, 'class')
 #  sfeats <- getFeatSelResult(mod)
 #  sfeats
 
-## ---- eval = FALSE------------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  suppressWarnings(RNGversion("3.5.0"))
 #  set.seed(0)
 #  r = resample(learner = ode_cl_aic_mlr_fs, task = t,
 #               resampling = rdesc, show.info = FALSE, measure = mlr::acc)
 
-## ---- eval = FALSE, echo = FALSE----------------------------------------------
+## ----eval = FALSE, echo = FALSE-----------------------------------------------
 #  ode_cl_aic_mlr_prob <- setPredictType(ode_cl_aic_mlr, "prob")
 #  set.seed(0)
 #  benchmark(ode_cl_aic_mlr_prob, t, rdesc, show.info = FALSE,
 #            measures = mlr::multiclass.auc)
 
-## ---- eval = FALSE------------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  rf <- makeLearner("classif.randomForest", id = "rf")
 #  classifiers <- list(ode_cl_aic_mlr, rf)
 #  suppressWarnings(RNGversion("3.5.0"))

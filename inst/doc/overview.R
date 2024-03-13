@@ -1,4 +1,4 @@
-## ---- echo = FALSE------------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 knitr::opts_chunk$set(cache = FALSE, autodep = TRUE, collapse = TRUE, comment = "", highlight = FALSE
                       # , fig.height = 3, fig.width = 3, 
                       )
@@ -21,7 +21,7 @@ cv(nb, car, k = 10)
 p <- predict(nb, car)
 head(p) 
 
-## ---- echo = FALSE, results='hide', include=FALSE-----------------------------
+## ----echo = FALSE, results='hide', include=FALSE------------------------------
 suppressWarnings(RNGversion("3.5.0"))
 set.seed(1)
 

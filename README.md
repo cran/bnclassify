@@ -5,11 +5,7 @@
 ![](https://cranlogs.r-pkg.org/badges/grand-total/bnclassify?color=yellowgreen)
 [![Research software
 impact](http://depsy.org/api/package/cran/bnclassify/badge.svg)](http://depsy.org/package/r/bnclassify)
-[![codecov.io](https://codecov.io/github/bmihaljevic/bnclassify/coverage.svg?branch=master)](https://codecov.io/github/bmihaljevic/bnclassify?branch=master)
-[![Travis-CI Build
-Status](https://travis-ci.org/bmihaljevic/bnclassify.svg?branch=master)](https://travis-ci.org/bmihaljevic/bnclassify)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/bmihaljevic/bnclassify?branch=master&svg=true)](https://ci.appveyor.com/project/bmihaljevic/bnclassify)
+[![codecov.io](https://app.codecov.io/github/bmihaljevic/bnclassify?branch=master)](https://app.codecov.io/github/bmihaljevic/bnclassify?branch=master)
 [![R-CMD-check](https://github.com/bmihaljevic/bnclassify/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bmihaljevic/bnclassify/actions/workflows/R-CMD-check.yaml)
 
 Implements algorithms for learning discrete Bayesian network classifiers
@@ -63,7 +59,7 @@ Estimate predictive accuracy with cross validation.
 
 ``` r
 cv(tn, car, k = 10)
-#> [1] 0.9386534
+#> [1] 0.9386641
 ```
 
 Or compute the log-likelihood
@@ -94,20 +90,13 @@ Ideally, you would use the `build_vignettes = TRUE` version, and thus
 get the vignettes, but it requires programs such as texi2dvi to be
 installed on your side.
 
-For network plotting and prediction with incomplete data you will also
-need two packages from Bioconductor. Install them with:
-
-``` r
-source("http://bioconductor.org/biocLite.R")
-biocLite(c("graph", "Rgraphviz"))
-```
-
 # Overview
 
 See an overview of the package and examples of usage:
 
 ``` r
 vignette('overview', package = 'bnclassify')
+#> Warning: vignette 'overview' not found
 ```
 
 See the list of main functionalities.
